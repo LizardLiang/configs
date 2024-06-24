@@ -44,7 +44,6 @@ function SwitchPaneWithZoomState(window, pane, line, direction)
 	for _, item in ipairs(panes) do
 		if item.is_active then
 			is_zoomed = item.is_zoomed
-			window:active_tab():set_title((is_zoomed and "True" or "False"))
 		end
 	end
 	window:active_tab():set_zoomed(false)
