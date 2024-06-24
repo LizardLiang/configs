@@ -49,7 +49,11 @@ function SwitchPaneWithZoomState(window, pane, line, direction)
 
 	local next_pane = window:active_tab():get_pane_direction(direction)
 	if next_pane == nil then
-		return
+		if direction == "Left" then
+			next_pane = panes[#panes].pane
+		elseif direction == "Right" then
+			next_pane = panes[1].pane
+		end
 	end
 
 	window:active_tab():set_zoomed(false)
@@ -72,8 +76,8 @@ config.keys = {
 	{ key = "s", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
 	{ key = "v", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{
-		key = "h",
-		mods = "LEADER",
+		key = "LeftArrow",
+		mods = "CTRL|SHIFT",
 		action = wezterm.action_callback(function(window, pane, line)
 			SwitchPaneWithZoomState(window, pane, line, "Left")
 		end),
@@ -93,8 +97,8 @@ config.keys = {
 		end),
 	},
 	{
-		key = "l",
-		mods = "LEADER",
+		key = "RightArrow",
+		mods = "CTRL|SHIFT",
 		action = wezterm.action_callback(function(window, pane, line)
 			SwitchPaneWithZoomState(window, pane, line, "Right")
 		end),
