@@ -31,7 +31,6 @@ config.window_decorations = "RESIZE"
 config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 3000
 config.default_workspace = "main"
-config.disable_default_key_bindings = true
 
 -- Dim inactive panes
 config.inactive_pane_hsb = {
@@ -57,6 +56,9 @@ end
 -- Keys
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1500 }
 config.keys = {
+	-- Basic usage
+	{ key = "v", mods = "CTRL", action = act.PasteFrom("Clipboard") },
+
 	-- Send C-a when pressing C-a twice
 	{ key = "a", mods = "LEADER|CTRL", action = act.SendKey({ key = "a", mods = "CTRL" }) },
 	{ key = "c", mods = "LEADER", action = act.ActivateCopyMode },
