@@ -46,8 +46,13 @@ function SwitchPaneWithZoomState(window, pane, line, direction)
 			is_zoomed = item.is_zoomed
 		end
 	end
-	window:active_tab():set_zoomed(false)
+
 	local next_pane = window:active_tab():get_pane_direction(direction)
+	if next_pane == nil then
+		return
+	end
+
+	window:active_tab():set_zoomed(false)
 	next_pane:activate()
 	window:active_tab():set_zoomed(is_zoomed)
 end
