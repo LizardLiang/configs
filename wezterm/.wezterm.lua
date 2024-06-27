@@ -103,6 +103,16 @@ config.keys = {
 			SwitchPaneWithZoomState(window, pane, line, "Right")
 		end),
 	},
+	{
+		key = "l",
+		mods = "CTRL|SHIFT",
+		action = act.ActivateTabRelative(1),
+	},
+	{
+		key = "h",
+		mods = "CTRL|SHIFT",
+		action = act.ActivateTabRelative(-1),
+	},
 	{ key = "q", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
 	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
 	{ key = "o", mods = "LEADER", action = act.RotatePanes("Clockwise") },
