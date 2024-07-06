@@ -42,7 +42,7 @@ Set-Alias g git
 Set-Alias gcz 'C:\Program Files\Git\cmd\git.exe cz'
 Set-Alias grep findstr
 Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
-Set-Alias less 'C:\Program Files\Git\usr\bin\less.exe'
+Set-Alias less 'C:\Users\shotu\scoop\apps\git\2.45.2\usr\bin\less.exe'
 Set-Alias cc 'Set-Clipboard'
 
 # Git alias
