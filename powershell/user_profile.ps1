@@ -248,4 +248,5 @@ Set-Alias -Name cdi -Value __zoxide_zi -Option AllScope -Scope Global -Force
 #
 # Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
-. ./env_profile.ps1
+. $HOME\.config\powershell\env_profile.ps1
+
