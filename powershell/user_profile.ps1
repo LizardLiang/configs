@@ -38,11 +38,14 @@ function ls-force {
 }
 Set-Alias -Name la -Value ls-force 
 
+$scoopDir = "$env:USERPROFILE\scoop"
+$lessPath = "$scoopDir\apps\git\2.45.2\usr\bin\less.exe"
+
 Set-Alias g git
 Set-Alias gcz 'C:\Program Files\Git\cmd\git.exe cz'
 Set-Alias grep findstr
 Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
-Set-Alias less 'C:\Users\shotu\scoop\apps\git\2.45.2\usr\bin\less.exe'
+Set-Alias less $lessPath
 Set-Alias cc 'Set-Clipboard'
 
 # Git alias
@@ -244,3 +247,5 @@ Set-Alias -Name cdi -Value __zoxide_zi -Option AllScope -Scope Global -Force
 # `echo $profile` in PowerShell):
 #
 # Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+. ./env_profile.ps1
