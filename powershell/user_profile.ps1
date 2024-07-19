@@ -91,27 +91,16 @@ function which ($command) {
 
 # To keep track of the last directory
 function Change-Directory {
-    param(
-        [string]$Path
-    )
+    # Get the current directory
+    $cwd = Get-Location
 
-    $global:LastDirectory = if (-not $global:LastDirectory) { Get-Location } else { $global:LastDirectory }
-
-    if ($Path -eq '-') {
-        $temp = Get-Location
-        Set-Location $global:LastDirectory
-        $global:LastDirectory = $temp
-    }
-    else {
-        $global:LastDirectory = Get-Location
-        Set-Location $Path
-    }
+    # Send OSC 7 escape sequence to update the terminal emulator
+    $osc7 = "$([char]27)]7;file://$($cwd.ProviderPath)$([char]7)"
+    [console]::OutputEncoding = [System.Text.Encoding]::UTF8
+    Write-Host -NoNewline $osc7
 }
 
 Set-Alias -Name clang -Value clang64
-
-del alias:cd -Force
-Set-Alias -Name cd -Value z
 
 function copy-path() {
     (Get-Location).Path | Set-Clipboard
@@ -223,6 +212,8 @@ function global:__zoxide_z {
             __zoxide_cd $result $true
         }
     }
+
+    Change-Directory
 }
 
 # Jump to a directory using interactive search.
@@ -231,6 +222,8 @@ function global:__zoxide_zi {
     if ($LASTEXITCODE -eq 0) {
         __zoxide_cd $result $true
     }
+
+    Change-Directory
 }
 
 # =============================================================================
