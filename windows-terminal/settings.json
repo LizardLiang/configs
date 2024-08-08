@@ -26,6 +26,10 @@
       "keys": "alt+shift+d"
     },
     {
+      "command": "duplicateTab",
+      "keys": "ctrl+shift+t"
+    },
+    {
       "command": {
         "action": "nextTab"
       },
@@ -38,19 +42,31 @@
       "keys": "ctrl+shift+h"
     },
     {
-      "command": { "action": "moveFocus", "direction": "right" },
-      "keys": "ctrl+shift+right"
-    },
-    {
-      "command": { "action": "moveFocus", "direction": "left" },
+      "command": {
+        "action": "moveFocus",
+        "direction": "left"
+      },
       "keys": "ctrl+shift+left"
     },
     {
-      "command": { "action": "moveFocus", "direction": "up" },
+      "command": {
+        "action": "moveFocus",
+        "direction": "right"
+      },
+      "keys": "ctrl+shift+right"
+    },
+    {
+      "command": {
+        "action": "moveFocus",
+        "direction": "up"
+      },
       "keys": "ctrl+shift+up"
     },
     {
-      "command": { "action": "moveFocus", "direction": "down" },
+      "command": {
+        "action": "moveFocus",
+        "direction": "down"
+      },
       "keys": "ctrl+shift+down"
     }
   ],
@@ -68,10 +84,10 @@
       "colorScheme": "Tokyo Night",
       "cursorShape": "filledBox",
       "font": {
-        "face": "FiraMono Nerd Font",
+        "face": "FiraCode Nerd Font Mono",
         "size": 14.0
       },
-      "opacity": 65,
+      "opacity": 20,
       "useAcrylic": true
     },
     "list": [
@@ -100,34 +116,16 @@
         "name": "Command Prompt"
       },
       {
-        "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
-        "hidden": true,
-        "name": "Ubuntu-20.04",
-        "source": "Windows.Terminal.Wsl"
-      },
-      {
         "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
         "hidden": false,
         "name": "Azure Cloud Shell",
         "source": "Windows.Terminal.Azure"
       },
       {
-        "guid": "{81ea87fd-be32-54be-9ed9-629e7e037be6}",
-        "hidden": false,
-        "name": "Developer Command Prompt for VS 2022",
-        "source": "Windows.Terminal.VisualStudio"
-      },
-      {
-        "guid": "{5c671e62-3ebc-51ed-ac7a-b3b2c63a09f3}",
-        "hidden": false,
-        "name": "Developer PowerShell for VS 2022",
-        "source": "Windows.Terminal.VisualStudio"
-      },
-      {
-        "guid": "{4dd1e689-b517-5f39-947d-78e8a8bdf958}",
-        "hidden": false,
-        "name": "Ubuntu 20.04.6 LTS",
-        "source": "CanonicalGroupLimited.Ubuntu20.04LTS_79rhkp1fndgsc"
+        "guid": "{17bf3de4-5353-5709-bcf9-835bd952a95e}",
+        "hidden": true,
+        "name": "Ubuntu-22.04",
+        "source": "Windows.Terminal.Wsl"
       }
     ]
   },
@@ -379,6 +377,29 @@
       "foreground": "#FFFFFF",
       "green": "#26A269",
       "name": "Ubuntu-22.04-ColorScheme",
+      "purple": "#881798",
+      "red": "#C21A23",
+      "selectionBackground": "#FFFFFF",
+      "white": "#CCCCCC",
+      "yellow": "#A2734C"
+    },
+    {
+      "background": "#300A24",
+      "black": "#171421",
+      "blue": "#0037DA",
+      "brightBlack": "#767676",
+      "brightBlue": "#08458F",
+      "brightCyan": "#2C9FB3",
+      "brightGreen": "#26A269",
+      "brightPurple": "#A347BA",
+      "brightRed": "#C01C28",
+      "brightWhite": "#F2F2F2",
+      "brightYellow": "#A2734C",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#3A96DD",
+      "foreground": "#FFFFFF",
+      "green": "#26A269",
+      "name": "Ubuntu-ColorScheme",
       "purple": "#881798",
       "red": "#C21A23",
       "selectionBackground": "#FFFFFF",

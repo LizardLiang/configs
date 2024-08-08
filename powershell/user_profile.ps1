@@ -38,6 +38,12 @@ function ls-force {
 }
 Set-Alias -Name la -Value ls-force 
 
+function wsl-tree {
+    wsl /home/linuxbrew/.linuxbrew/bin/tree $args
+}
+
+Set-Alias -Name tree -Value wsl-tree
+
 $scoopDir = "$env:USERPROFILE\scoop"
 $lessPath = "$scoopDir\apps\git\2.45.2\usr\bin\less.exe"
 
@@ -242,4 +248,5 @@ Set-Alias -Name cdi -Value __zoxide_zi -Option AllScope -Scope Global -Force
 # Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 . $HOME\.config\powershell\env_profile.ps1
+
 
