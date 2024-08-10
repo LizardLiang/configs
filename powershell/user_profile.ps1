@@ -117,6 +117,11 @@ Set-Alias -Name e -Value explorer
 
 [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 
+# Convert Windows shitty path to Unix-like path
+function ConvertWindowsDelimiterToUnix($path) {
+    return $path -replace '\\', '/'
+}
+
 # =============================================================================
 #
 # Utility functions for zoxide.
