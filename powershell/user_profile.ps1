@@ -38,12 +38,6 @@ function ls-force {
 }
 Set-Alias -Name la -Value ls-force 
 
-function wsl-tree {
-    wsl /home/linuxbrew/.linuxbrew/bin/tree $args
-}
-
-Set-Alias -Name tree -Value wsl-tree
-
 $scoopDir = "$env:USERPROFILE\scoop"
 $lessPath = "$scoopDir\apps\git\2.45.2\usr\bin\less.exe"
 
@@ -118,9 +112,28 @@ Set-Alias -Name e -Value explorer
 [System.Console]::OutputEncoding = [System.Console]::InputEncoding = [System.Text.Encoding]::UTF8
 
 # Convert Windows shitty path to Unix-like path
-function ConvertWindowsDelimiterToUnix($path) {
-    return $path -replace '\\', '/'
+function ConvertWindowsDelimiterToUnix {
+  param (
+    [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+    [string[]]$args
+  )
+
+  for($i = 0; $i -lt $args.Count; $i++) {
+    if(-not $args[$i].Contains('\')) {continue}
+    $args[$i] = $args[$i] -replace '\\', '/'
+  }
+
+  return $args
 }
+
+# Utilities that empower the wsl commands
+
+function wsl-tree {
+  $convertedArgs = ConvertWindowsDelimiterToUnix $args
+  wsl /home/linuxbrew/.linuxbrew/bin/tree $convertedArgs
+}
+
+Set-Alias -Name tree -Value wsl-tree
 
 # =============================================================================
 #
