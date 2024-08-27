@@ -14,6 +14,17 @@
       "keys": "ctrl+v"
     },
     {
+      "command": {
+        "action": "moveFocus",
+        "direction": "up"
+      },
+      "keys": "ctrl+shift+up"
+    },
+    {
+      "command": "duplicateTab",
+      "keys": "ctrl+shift+t"
+    },
+    {
       "command": "find",
       "keys": "ctrl+shift+f"
     },
@@ -24,10 +35,6 @@
         "splitMode": "duplicate"
       },
       "keys": "alt+shift+d"
-    },
-    {
-      "command": "duplicateTab",
-      "keys": "ctrl+shift+t"
     },
     {
       "command": {
@@ -44,23 +51,16 @@
     {
       "command": {
         "action": "moveFocus",
-        "direction": "left"
+        "direction": "previousInOrder"
       },
       "keys": "ctrl+shift+left"
     },
     {
       "command": {
         "action": "moveFocus",
-        "direction": "right"
+        "direction": "nextInOrder"
       },
       "keys": "ctrl+shift+right"
-    },
-    {
-      "command": {
-        "action": "moveFocus",
-        "direction": "up"
-      },
-      "keys": "ctrl+shift+up"
     },
     {
       "command": {
@@ -88,6 +88,8 @@
         "size": 14.0
       },
       "opacity": 20,
+      "padding": "2",
+      "scrollbarState": "hidden",
       "useAcrylic": true
     },
     "list": [
@@ -126,6 +128,18 @@
         "hidden": true,
         "name": "Ubuntu-22.04",
         "source": "Windows.Terminal.Wsl"
+      },
+      {
+        "guid": "{58dc009d-f3a2-54e0-959a-0cb8df2de084}",
+        "hidden": false,
+        "name": "Developer Command Prompt for VS 2022",
+        "source": "Windows.Terminal.VisualStudio"
+      },
+      {
+        "guid": "{b2b05c6a-484f-5845-9fee-0284e8e1bd94}",
+        "hidden": false,
+        "name": "Developer PowerShell for VS 2022",
+        "source": "Windows.Terminal.VisualStudio"
       }
     ]
   },
