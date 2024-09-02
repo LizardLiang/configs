@@ -20,6 +20,7 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 # Fzf
 Import-Module PSFzf
 Set-PsFzfOption -PSReadLineChordProvider 'Ctrl+f' -PSReadLineChordReverseHistory 'Ctrl+r'
+$env:FZF_DEFAULT_OPTS="--bind 'ctrl-y:execute-silent(echo {} | clip)+abort'"
 
 # Alias
 Set-Alias vim nvim
