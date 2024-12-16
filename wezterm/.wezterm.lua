@@ -23,29 +23,10 @@ config.default_prog = { pwsh_path }
 
 config.color_scheme = "Tokyo Night"
 config.font = wezterm.font_with_fallback({
-	{ family = "FiraCode Nerd Font Mono", scale = 1.20 },
+	{ family = "FiraCode Nerd Font Mono", scale = 1.24 },
 	{ family = "Microsoft YaHei", scale = 1.2 },
 })
-
-config.background = {
-	{
-		source = { File = "D:\\pics\\wezterm-bg.jpg" },
-		repeat_x = "Mirror",
-		vertical_align = "Middle",
-		hsb = {
-			-- Darken the background image by reducing it to 1/3rd
-			brightness = 0.1,
-
-			-- You can adjust the hue by scaling its value.
-			-- a multiplier of 1.0 leaves the value unchanged.
-			hue = 1.0,
-
-			-- You can adjust the saturation also.
-			saturation = 0.6,
-		},
-	},
-}
-config.window_background_opacity = 0.7
+config.window_background_opacity = 0.9
 config.window_decorations = "RESIZE"
 config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 3000
