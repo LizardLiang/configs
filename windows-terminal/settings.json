@@ -1,23 +1,20 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema-preview",
-    "actions": 
-    [
+    "actions": [
         {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "previousInOrder"
-            },
-            "id": "User.moveFocus.787314EB"
-        },
-        {
-            "command": 
-            {
+            "command": {
                 "action": "copy",
                 "singleLine": false
             },
             "id": "User.copy.644BA8F2"
+        },
+        {
+            "command": {
+                "action": "moveFocus",
+                "direction": "previousInOrder"
+            },
+            "id": "User.moveFocus.787314EB"
         },
         {
             "command": "paste",
@@ -28,27 +25,20 @@
             "id": "User.duplicateTab"
         },
         {
-            "command": 
-            {
+            "command": {
                 "action": "prevTab"
             },
             "id": "User.prevTab.0"
         },
         {
-            "command": "find",
-            "id": "User.find"
-        },
-        {
-            "command": 
-            {
+            "command": {
                 "action": "moveFocus",
                 "direction": "nextInOrder"
             },
             "id": "User.moveFocus.D7681B66"
         },
         {
-            "command": 
-            {
+            "command": {
                 "action": "splitPane",
                 "split": "auto",
                 "splitMode": "duplicate"
@@ -56,8 +46,11 @@
             "id": "User.splitPane.A6751878"
         },
         {
-            "command": 
-            {
+            "command": "find",
+            "id": "User.find"
+        },
+        {
+            "command": {
                 "action": "nextTab"
             },
             "id": "User.nextTab.0"
@@ -66,31 +59,30 @@
     "copyFormatting": "none",
     "copyOnSelect": false,
     "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-    "keybindings": 
-    [
-        {
-            "id": "User.moveFocus.787314EB",
-            "keys": "ctrl+shift+k"
-        },
+    "keybindings": [
         {
             "id": "User.copy.644BA8F2",
             "keys": "ctrl+c"
         },
         {
-            "id": "User.find",
-            "keys": "ctrl+shift+f"
+            "id": "User.moveFocus.787314EB",
+            "keys": "ctrl+shift+k"
         },
         {
             "id": "User.paste",
             "keys": "ctrl+v"
         },
         {
-            "id": "User.prevTab.0",
-            "keys": "ctrl+shift+h"
+            "id": "User.find",
+            "keys": "ctrl+shift+f"
         },
         {
             "id": "User.duplicateTab",
             "keys": "ctrl+shift+t"
+        },
+        {
+            "id": "User.prevTab.0",
+            "keys": "ctrl+shift+h"
         },
         {
             "id": "User.splitPane.A6751878",
@@ -105,37 +97,40 @@
             "keys": "ctrl+shift+j"
         }
     ],
-    "newTabMenu": 
-    [
+    "newTabMenu": [
         {
             "type": "remainingProfiles"
         }
     ],
     "newTabPosition": "afterCurrentTab",
-    "profiles": 
-    {
-        "defaults": 
-        {
+    "profiles": {
+        "defaults": {
+            "backgroundImage": "D:\\pics\\a175_016_2x.png",
+            "backgroundImageOpacity": 0.05,
             "bellStyle": "taskbar",
             "colorScheme": "Tokyo Night",
             "cursorShape": "filledBox",
-            "font": 
-            {
+            "font": {
                 "face": "Sarasa Term TC, FiraCode Nerd Font Mono, FiraCode Nerd Font Mono Retina, Hack Nerd Font Mono, Hack Nerd Font Mono",
                 "size": 14
             },
-            "opacity": 85,
+            "opacity": 60,
             "padding": "2",
             "scrollbarState": "hidden",
             "useAcrylic": true
         },
-        "list": 
-        [
+        "list": [
             {
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
                 "hidden": false,
                 "name": "PowerShell",
                 "source": "Windows.Terminal.PowershellCore"
+            },
+            {
+                "guid": "{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}",
+                "hidden": false,
+                "name": "Ubuntu 22.04.5 LTS",
+                "source": "CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc"
             },
             {
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
@@ -174,12 +169,6 @@
                 "source": "Windows.Terminal.VisualStudio"
             },
             {
-                "guid": "{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}",
-                "hidden": false,
-                "name": "Ubuntu 22.04.5 LTS",
-                "source": "CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc"
-            },
-            {
                 "commandline": "%SystemRoot%\\System32\\bash.exe",
                 "guid": "{d88ff57b-8ae6-4327-abba-4d7d7a446e72}",
                 "hidden": false,
@@ -193,8 +182,7 @@
             }
         ]
     },
-    "schemes": 
-    [
+    "schemes": [
         {
             "background": "#222436",
             "black": "#414868",

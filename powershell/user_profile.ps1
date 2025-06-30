@@ -146,3 +146,8 @@ Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 Set-Alias -Name cd -Value __zoxide_z -Option AllScope -Scope Global -Force
 Set-Alias -Name cdi -Value __zoxide_zi -Option AllScope -Scope Global -Force
+
+function ai-generate-commit() {
+  uv run git-diff --no-add --confirm
+}
+Set-Alias -Name aigc -Value ai-generate-commit -Scope Global
