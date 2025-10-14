@@ -151,3 +151,24 @@ function ai-generate-commit() {
   uv run git-diff --no-add --confirm
 }
 Set-Alias -Name aigc -Value ai-generate-commit -Scope Global
+
+function Append-LinusRole {
+    Get-Content "${HOME}\.config\ai-helpers\prompts\linus-role.md" | Add-Content ".\CLAUDE.md"
+    Write-Host "Appended linus-role.md to CLAUDE.md" -ForegroundColor Green
+}
+Set-Alias alr Append-LinusRole
+
+function Enable-CopilotServer {
+    $env:ANTHROPIC_BASE_URL = "http://localhost:4141"
+    $env:ANTHROPIC_API_KEY = "sk-dummy"
+    Write-Host "Copilot server environment enabled" -ForegroundColor Green
+}
+
+function Disable-CopilotServer {
+    Remove-Item env:ANTHROPIC_BASE_URL -ErrorAction SilentlyContinue
+    Remove-Item env:ANTHROPIC_API_KEY -ErrorAction SilentlyContinue
+    Write-Host "Copilot server environment disabled" -ForegroundColor Yellow
+}
+
+Set-Alias copilot-on Enable-CopilotServer
+Set-Alias copilot-off Disable-CopilotServer
