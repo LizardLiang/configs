@@ -48,6 +48,7 @@ Set-Alias grep findstr
 Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
 Set-Alias less $lessPath
 Set-Alias cc 'Set-Clipboard'
+Set-Alias c 'claude'
 
 # Git alias
 function git-log-graph  { g log --graph --decorate --oneline }
