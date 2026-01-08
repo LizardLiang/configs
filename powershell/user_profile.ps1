@@ -173,3 +173,8 @@ function Disable-CopilotServer {
 
 Set-Alias copilot-on Enable-CopilotServer
 Set-Alias copilot-off Disable-CopilotServer
+
+function Update-OpenCode {
+    pwsh -NoProfile -File "$HOME\.config\powershell\commands\update-opencode.ps1"
+}
+Set-Alias -Name uoc -Value Update-OpenCode
