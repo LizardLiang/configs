@@ -20,7 +20,7 @@ $ProjectPath = 'C:\Users\lizard_liang\personal\side-project\opencode\packages\op
 $FeatureBranch = 'fix/windows-storage-uv-unknown-retry'
 $DevBranch = 'dev'
 $SourceExe = 'dist\opencode-windows-x64\bin\opencode.exe'
-$TargetExe = 'C:\Users\lizard_liang\scoop\apps\opencode\1.1.1\opencode.exe'
+$TargetExe = 'C:\Users\lizard_liang\scoop\apps\opencode\1.1.8\opencode.exe'
 
 function Write-Step {
     param([string]$Message)
