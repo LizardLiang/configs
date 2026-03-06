@@ -1,14 +1,17 @@
-# Prompt
-Import-Module posh-git
-oh-my-posh init pwsh --config "${HOME}\.config\powershell\lizard.omg.json"  | Invoke-Expression
+# Prompt - cache init script to avoid spawning oh-my-posh binary every session
+$_ompCache = "$env:TEMP\omp_${env:USERNAME}_init.ps1"
+if (-not (Test-Path $_ompCache) -or ((Get-Item $_ompCache).LastWriteTime -lt (Get-Date).AddDays(-7))) {
+    oh-my-posh init pwsh --config "${HOME}\.config\powershell\lizard.omg.json" | Out-File $_ompCache -Encoding utf8
+}
+. $_ompCache
 
 # Load prompt setting
 #function Get-ScriptDirectory { Split-Path $MyInvocation.ScriptName }
 #$PROMPT_CONFIG = Join-Path (Get-ScriptDirectory) 'lizard.omg.json'
 #oh-my-posh --init --shell pwsh --config $PROMPT_CONFIG | Invoke-Expression
 
-# Icons
-Import-Module Terminal-icons
+# Icons - load after first prompt via idle event (non-blocking)
+Register-EngineEvent -SourceIdentifier PowerShell.OnIdle -MaxTriggerCount 1 -Action { Import-Module Terminal-Icons } | Out-Null
 
 # PSReadline
 Set-PSReadLineOption -EditMode Emacs
@@ -17,10 +20,16 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 
-# Fzf
-Import-Module PSFzf
-Set-PsFzfOption -PSReadLineChordProvider 'Ctrl+f' -PSReadLineChordReverseHistory 'Ctrl+r'
+# Fzf - lazy load on first keypress to avoid ~600ms startup cost
 $env:FZF_DEFAULT_OPTS="--bind 'ctrl-y:execute-silent(echo {} | clip)+abort'"
+$_initPSFzf = {
+    if (-not (Get-Module PSFzf)) {
+        Import-Module PSFzf
+        Set-PsFzfOption -PSReadLineChordProvider 'Ctrl+f' -PSReadLineChordReverseHistory 'Ctrl+r'
+    }
+}
+Set-PSReadLineKeyHandler -Chord 'Ctrl+f' -ScriptBlock { & $_initPSFzf; Invoke-FzfTabCompletion }
+Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { & $_initPSFzf; Invoke-FzfReverseHistorySearch }
 
 # Alias
 Set-Alias vim nvim
@@ -143,7 +152,12 @@ Set-Alias -Name tree -Value wsl-tree
 
 . $HOME\.config\powershell\env_profile.ps1
 
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
+# zoxide - cache init script to avoid spawning binary every session
+$_zoxideCache = "$env:TEMP\zoxide_${env:USERNAME}_init.ps1"
+if (-not (Test-Path $_zoxideCache) -or ((Get-Item $_zoxideCache).LastWriteTime -lt (Get-Date).AddDays(-7))) {
+    zoxide init powershell | Out-File $_zoxideCache -Encoding utf8
+}
+. $_zoxideCache
 
 Set-Alias -Name cd -Value __zoxide_z -Option AllScope -Scope Global -Force
 Set-Alias -Name cdi -Value __zoxide_zi -Option AllScope -Scope Global -Force
@@ -180,3 +194,11 @@ function Update-OpenCode {
 Set-Alias -Name uoc -Value Update-OpenCode
 
 Set-Alias -Name msbuild "C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\amd64\MSBuild.exe"
+
+# Emit OSC 7 for WezTerm CWD tracking (OMP handles OSC 99 for Windows Terminal)
+$__omp_prompt = $function:prompt
+function global:prompt {
+    $path = $PWD.Path.Replace('\', '/') -replace '^([A-Za-z]):', '/$1:'
+    [Console]::Write("`e]7;file://localhost${path}`a")
+    & $__omp_prompt
+}
