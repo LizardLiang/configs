@@ -18,6 +18,26 @@
       "options": {
         "projectId": "gen-lang-client-0168942848"
       }
+    },
+    "anthropic": {
+      "models": {
+        "claude-sonnet-4-5-20250929": {
+          "name": "Claude Sonnet 4"
+        },
+        "claude-opus-4-5-20251101": {
+          "name": "Claude Opus 4.5"
+        },
+        "claude-haiku-4-5-20251001": {
+          "name": "Claude Haiku 4"
+        }
+      }
+    }
+  },
+  "model": "anthropic/claude-sonnet-4-5-20250929",
+  // Mode-specific overrides
+  "mode": {
+    "plan": {
+      "model": "anthropic/claude-opus-4-5-20251101"
     }
   },
   "keybinds": {
