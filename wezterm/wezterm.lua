@@ -68,6 +68,7 @@ config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1500 }
 config.keys = {
 	-- Passthrough
 	{ key = "v", mods = "CTRL", action = act.PasteFrom("Clipboard") },
+	{ key = "Enter", mods = "SHIFT", action = act.SendString("\n") },
 	-- Send C-a when pressing C-a twice (tmux passthrough)
 	{ key = "a", mods = "LEADER|CTRL", action = act.SendKey({ key = "a", mods = "CTRL" }) },
 	{ key = "phys:Space", mods = "LEADER", action = act.ActivateCommandPalette },
@@ -77,7 +78,7 @@ config.keys = {
 	{ key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },                  -- next window
 	{ key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },                 -- prev window
 	{ key = "w", mods = "LEADER", action = act.ShowTabNavigator },                        -- list windows
-	{ key = "&", mods = "LEADER", action = act.CloseCurrentTab({ confirm = true }) },     -- kill window
+	{ key = "&", mods = "LEADER|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },     -- kill window
 	{
 		key = "e",
 		mods = "LEADER",
@@ -100,8 +101,24 @@ config.keys = {
 	{ key = "}", mods = "LEADER|SHIFT", action = act.MoveTabRelative(1) },
 
 	-- Panes — tmux style
-	{ key = '"', mods = "LEADER|SHIFT", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },   -- split below (LEADER + ")
-	{ key = "%", mods = "LEADER|SHIFT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) }, -- split right (LEADER + %)
+	{
+		key = '"',
+		mods = "LEADER|SHIFT",
+		action = wezterm.action_callback(function(window, pane)
+			local cwd = pane:get_current_working_dir()
+			local cwd_path = cwd and cwd.file_path:gsub("^/", "") or nil
+			window:perform_action(act.SplitVertical({ domain = "CurrentPaneDomain", cwd = cwd_path }), pane)
+		end),
+	}, -- split below (LEADER + ")
+	{
+		key = "%",
+		mods = "LEADER|SHIFT",
+		action = wezterm.action_callback(function(window, pane)
+			local cwd = pane:get_current_working_dir()
+			local cwd_path = cwd and cwd.file_path:gsub("^/", "") or nil
+			window:perform_action(act.SplitHorizontal({ domain = "CurrentPaneDomain", cwd = cwd_path }), pane)
+		end),
+	}, -- split right (LEADER + %)
 	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },              -- kill pane
 	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },                               -- zoom pane
 	{ key = "o", mods = "LEADER", action = act.RotatePanes("Clockwise") },
