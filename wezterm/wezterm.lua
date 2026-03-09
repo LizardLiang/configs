@@ -22,13 +22,54 @@ end
 config.default_prog = { pwsh_path }
 
 config.color_scheme = "Tokyo Night"
+config.colors = {
+	tab_bar = {
+		background = "#1a1b26",
+		active_tab = {
+			bg_color = "#292e42",
+			fg_color = "#7aa2f7",
+			intensity = "Bold",
+		},
+		inactive_tab = {
+			bg_color = "#1a1b26",
+			fg_color = "#565f89",
+		},
+		inactive_tab_hover = {
+			bg_color = "#292e42",
+			fg_color = "#c0caf5",
+		},
+		new_tab = {
+			bg_color = "#1a1b26",
+			fg_color = "#565f89",
+		},
+		new_tab_hover = {
+			bg_color = "#292e42",
+			fg_color = "#7aa2f7",
+		},
+	},
+}
 config.font = wezterm.font_with_fallback({
 	{ family = "Sarasa Term TC" },
 	{ family = "FiraCode Nerd Font Mono" },
 	{ family = "FiraCode Nerd Font" },
 })
 config.font_size = 14
-config.window_background_opacity = 0.9
+config.window_background_opacity = 0
+config.win32_system_backdrop = "Acrylic"
+config.text_background_opacity = 0.8
+config.background = {
+	{
+		source = { Color = "#1a1b26" },
+		width = "100%",
+		height = "100%",
+		opacity = 0.97,
+	},
+	{
+		source = { File = "C:\\Users\\lizard_liang\\Pictures\\343502-universe-black_holes.jpg" },
+		hsb = { brightness = 0.15, hue = 1.0, saturation = 1.0 },
+		opacity = 0.2,
+	},
+}
 config.window_decorations = "RESIZE"
 config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 3000
@@ -74,11 +115,11 @@ config.keys = {
 	{ key = "phys:Space", mods = "LEADER", action = act.ActivateCommandPalette },
 
 	-- Windows (tabs) — tmux style
-	{ key = "c", mods = "LEADER", action = act.SpawnTab("CurrentPaneDomain") },          -- new window
-	{ key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },                  -- next window
-	{ key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },                 -- prev window
-	{ key = "w", mods = "LEADER", action = act.ShowTabNavigator },                        -- list windows
-	{ key = "&", mods = "LEADER|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },     -- kill window
+	{ key = "c", mods = "LEADER", action = act.SpawnTab("CurrentPaneDomain") }, -- new window
+	{ key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) }, -- next window
+	{ key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) }, -- prev window
+	{ key = "w", mods = "LEADER", action = act.ShowTabNavigator }, -- list windows
+	{ key = "&", mods = "LEADER|SHIFT", action = act.CloseCurrentTab({ confirm = true }) }, -- kill window
 	{
 		key = "e",
 		mods = "LEADER",
@@ -119,8 +160,8 @@ config.keys = {
 			window:perform_action(act.SplitHorizontal({ domain = "CurrentPaneDomain", cwd = cwd_path }), pane)
 		end),
 	}, -- split right (LEADER + %)
-	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },              -- kill pane
-	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },                               -- zoom pane
+	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) }, -- kill pane
+	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState }, -- zoom pane
 	{ key = "o", mods = "LEADER", action = act.RotatePanes("Clockwise") },
 	-- Navigate panes (vim-style)
 	{
