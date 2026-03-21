@@ -202,3 +202,5 @@ function global:prompt {
     [Console]::Write("`e]7;file://localhost${path}`a")
     & $__omp_prompt
 }
+
+. $HOME\.config\powershell\alias.ps1
