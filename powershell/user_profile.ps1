@@ -1,6 +1,11 @@
 # Prompt - cache init script to avoid spawning oh-my-posh binary every session
+# Invalidate when cache is >7 days old OR oh-my-posh binary has been updated
 $_ompCache = "$env:TEMP\omp_${env:USERNAME}_init.ps1"
-if (-not (Test-Path $_ompCache) -or ((Get-Item $_ompCache).LastWriteTime -lt (Get-Date).AddDays(-7))) {
+$_ompBin = (Get-Command oh-my-posh -ErrorAction SilentlyContinue)?.Source
+$_ompStale = (-not (Test-Path $_ompCache)) -or
+    ((Get-Item $_ompCache).LastWriteTime -lt (Get-Date).AddDays(-7)) -or
+    ($_ompBin -and (Get-Item $_ompBin).LastWriteTime -gt (Get-Item $_ompCache).LastWriteTime)
+if ($_ompStale) {
     oh-my-posh init pwsh --config "${HOME}\.config\powershell\lizard.omg.json" | Out-File $_ompCache -Encoding utf8
 }
 . $_ompCache
@@ -153,8 +158,13 @@ Set-Alias -Name tree -Value wsl-tree
 . $HOME\.config\powershell\env_profile.ps1
 
 # zoxide - cache init script to avoid spawning binary every session
+# Invalidate when cache is >7 days old OR zoxide binary has been updated
 $_zoxideCache = "$env:TEMP\zoxide_${env:USERNAME}_init.ps1"
-if (-not (Test-Path $_zoxideCache) -or ((Get-Item $_zoxideCache).LastWriteTime -lt (Get-Date).AddDays(-7))) {
+$_zoxideBin = (Get-Command zoxide -ErrorAction SilentlyContinue)?.Source
+$_zoxideStale = (-not (Test-Path $_zoxideCache)) -or
+    ((Get-Item $_zoxideCache).LastWriteTime -lt (Get-Date).AddDays(-7)) -or
+    ($_zoxideBin -and (Get-Item $_zoxideBin).LastWriteTime -gt (Get-Item $_zoxideCache).LastWriteTime)
+if ($_zoxideStale) {
     zoxide init powershell | Out-File $_zoxideCache -Encoding utf8
 }
 . $_zoxideCache
