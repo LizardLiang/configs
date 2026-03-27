@@ -213,4 +213,8 @@ function global:prompt {
     & $__omp_prompt
 }
 
+function refreshenv {
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+}
+
 . $HOME\.config\powershell\alias.ps1
