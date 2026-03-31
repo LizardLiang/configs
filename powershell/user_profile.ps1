@@ -69,7 +69,7 @@ Set-Alias grep findstr
 Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
 Set-Alias less $lessPath
 Set-Alias cc 'Set-Clipboard'
-function open-claude-auto { claude --enable-auto-mode }
+function open-claude-auto { claude }
 Set-Alias -Name c -Value open-claude-auto
 
 # Git alias
