@@ -207,6 +207,35 @@ config.keys = {
 			SwitchPaneWithZoomState(window, pane, line, "Right")
 		end),
 	},
+	-- Navigate panes with CTRL+Arrow
+	{
+		key = "LeftArrow",
+		mods = "CTRL",
+		action = wezterm.action_callback(function(window, pane, line)
+			SwitchPaneWithZoomState(window, pane, line, "Left")
+		end),
+	},
+	{
+		key = "RightArrow",
+		mods = "CTRL",
+		action = wezterm.action_callback(function(window, pane, line)
+			SwitchPaneWithZoomState(window, pane, line, "Right")
+		end),
+	},
+	{
+		key = "UpArrow",
+		mods = "CTRL",
+		action = wezterm.action_callback(function(window, pane, line)
+			SwitchPaneWithZoomState(window, pane, line, "Up")
+		end),
+	},
+	{
+		key = "DownArrow",
+		mods = "CTRL",
+		action = wezterm.action_callback(function(window, pane, line)
+			SwitchPaneWithZoomState(window, pane, line, "Down")
+		end),
+	},
 	-- Resize panes
 	{
 		key = "r",
