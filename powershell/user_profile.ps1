@@ -8,7 +8,14 @@ $_ompStale = (-not (Test-Path $_ompCache)) -or
 if ($_ompStale) {
     oh-my-posh init pwsh --config "${HOME}\.config\powershell\lizard.omg.json" | Out-File $_ompCache -Encoding utf8
 }
-. $_ompCache
+try {
+    . $_ompCache
+} catch {
+    # Cache references a deleted file (e.g. after omp update) — regenerate and retry
+    Remove-Item $_ompCache -Force -ErrorAction SilentlyContinue
+    oh-my-posh init pwsh --config "${HOME}\.config\powershell\lizard.omg.json" | Out-File $_ompCache -Encoding utf8
+    . $_ompCache
+}
 
 # Load prompt setting
 #function Get-ScriptDirectory { Split-Path $MyInvocation.ScriptName }
@@ -62,7 +69,8 @@ Set-Alias grep findstr
 Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
 Set-Alias less $lessPath
 Set-Alias cc 'Set-Clipboard'
-Set-Alias c 'claude'
+function open-claude-auto { claude --enable-auto-mode }
+Set-Alias -Name c -Value open-claude-auto
 
 # Git alias
 function git-log-graph  { g log --graph --decorate --oneline }
