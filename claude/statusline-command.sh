@@ -79,6 +79,7 @@ make_bar() {
 }
 
 five_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+five_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
 week_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 
 # Line 1: user@host:dir | model | timestamp
@@ -91,7 +92,11 @@ if [ -n "$remaining" ] && [ -n "$used" ]; then
 
   if [ -n "$five_pct" ]; then
     bar5=$(make_bar "$five_pct" "$C_5H")
-    line2="${line2} ${C_SEP}|${C_RESET} ${C_5H}5h:[${bar5}${C_5H}] $(printf '%.0f' "$five_pct")%${C_RESET}"
+    five_reset_str=''
+    if [ -n "$five_reset" ]; then
+      five_reset_str=" @$(date -d @"$five_reset" '+%H:%M' 2>/dev/null || date -r "$five_reset" '+%H:%M' 2>/dev/null || echo '?')"
+    fi
+    line2="${line2} ${C_SEP}|${C_RESET} ${C_5H}5h:[${bar5}${C_5H}] $(printf '%.0f' "$five_pct")%${five_reset_str}${C_RESET}"
   fi
   if [ -n "$week_pct" ]; then
     bar7=$(make_bar "$week_pct" "$C_7D")
