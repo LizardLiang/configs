@@ -105,7 +105,7 @@ function SwitchPaneWithZoomState(window, pane, line, direction)
 end
 
 -- Keys
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1500 }
+config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1500 }
 config.keys = {
 	-- Passthrough
 	{ key = "v", mods = "CTRL", action = act.PasteFrom("Clipboard") },

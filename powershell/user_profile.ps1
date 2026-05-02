@@ -46,17 +46,17 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { & $_initPSFzf; Invoke-Fz
 # Alias
 Set-Alias vim nvim
 Set-Alias v vim
+function eza-with-color-on { eza --color=always }
+Set-Alias -Name ls -Value eza-with-color-on
 
 function ls-less {
-  Get-ChildItem $args | less -r
+  eza --color=always $args | less -R
 }
 
-Set-Alias -Name lsl -Value ls-less
-
-Set-Alias ll ls
+Set-Alias -Name ll -Value ls-less
 
 function ls-force {
-    Get-ChildItem -Force $args | less -r
+    eza --color=always -a $args | less -R
 }
 Set-Alias -Name la -Value ls-force 
 
