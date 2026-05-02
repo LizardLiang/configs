@@ -1,26 +1,7 @@
-# Prompt - cache init script to avoid spawning oh-my-posh binary every session
-# Invalidate when cache is >7 days old OR oh-my-posh binary has been updated
-$_ompCache = "$env:TEMP\omp_${env:USERNAME}_init.ps1"
-$_ompBin = (Get-Command oh-my-posh -ErrorAction SilentlyContinue)?.Source
-$_ompStale = (-not (Test-Path $_ompCache)) -or
-    ((Get-Item $_ompCache).LastWriteTime -lt (Get-Date).AddDays(-7)) -or
-    ($_ompBin -and (Get-Item $_ompBin).LastWriteTime -gt (Get-Item $_ompCache).LastWriteTime)
-if ($_ompStale) {
-    oh-my-posh init pwsh --config "${HOME}\.config\powershell\lizard.omg.json" | Out-File $_ompCache -Encoding utf8
-}
-try {
-    . $_ompCache
-} catch {
-    # Cache references a deleted file (e.g. after omp update) — regenerate and retry
-    Remove-Item $_ompCache -Force -ErrorAction SilentlyContinue
-    oh-my-posh init pwsh --config "${HOME}\.config\powershell\lizard.omg.json" | Out-File $_ompCache -Encoding utf8
-    . $_ompCache
-}
-
 # Load prompt setting
-#function Get-ScriptDirectory { Split-Path $MyInvocation.ScriptName }
-#$PROMPT_CONFIG = Join-Path (Get-ScriptDirectory) 'lizard.omg.json'
-#oh-my-posh --init --shell pwsh --config $PROMPT_CONFIG | Invoke-Expression
+function Get-ScriptDirectory { Split-Path $MyInvocation.ScriptName }
+$PROMPT_CONFIG = Join-Path (Get-ScriptDirectory) 'lizard.omg.json'
+oh-my-posh --init --shell pwsh --config $PROMPT_CONFIG | Invoke-Expression
 
 # Icons - load after first prompt via idle event (non-blocking)
 Register-EngineEvent -SourceIdentifier PowerShell.OnIdle -MaxTriggerCount 1 -Action { Import-Module Terminal-Icons } | Out-Null
