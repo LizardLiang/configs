@@ -27,7 +27,7 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { & $_initPSFzf; Invoke-Fz
 # Alias
 Set-Alias vim nvim
 Set-Alias v vim
-function eza-with-color-on { eza --color=always }
+function eza-with-color-on { eza --color=always $args }
 Set-Alias -Name ls -Value eza-with-color-on
 
 function ls-less {
@@ -57,13 +57,13 @@ Set-Alias -Name c -Value open-claude-auto
 function git-log-graph  { g log --graph --decorate --oneline }
 Set-Alias -Name glg -Value git-log-graph
 
-function git-diff { git diff }
+function git-diff { git diff $args }
 Set-Alias -Name gd -Value git-diff
 
 function git-checkout { git checkout $args }
 Set-Alias -Name gco -Value git-checkout
 
-function git-fetch { git fetch }
+function git-fetch { git fetch $args }
 Set-Alias -Name gf -Value git-fetch
 
 function git-pull { git pull $args }
