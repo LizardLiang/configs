@@ -1,152 +1,127 @@
-# Claude Code Detailed Status Line Script
-# Shows: git branch, model, directory, and context usage bar (with color)
+# Claude Code status line with ASCII context window chart
 $ErrorActionPreference = 'SilentlyContinue'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# ANSI color helpers
 $ESC = [char]27
 function ansi($code) { return "$ESC[${code}m" }
-$RESET  = ansi '0'
-$BOLD   = ansi '1'
-$DIM    = ansi '2'
-# Foreground colors
-$FG_GREEN   = ansi '32'
-$FG_YELLOW  = ansi '33'
-$FG_RED     = ansi '31'
-$FG_CYAN    = ansi '36'
-$FG_BLUE    = ansi '34'
-$FG_WHITE   = ansi '37'
-$FG_GRAY    = ansi '90'
-$FG_MAGENTA = ansi '35'
+
+$RESET       = ansi '0'
+$C_USER      = ansi '36'   # Cyan   — user@host:dir
+$C_GIT       = ansi '33'   # Yellow — git branch
+$C_MODEL     = ansi '35'   # Magenta — model name
+$C_TIME      = ansi '37'   # Light gray — timestamp
+$C_CTX_LABEL = ansi '32'   # Green — ctx label/bar/percentage
+$C_CTX_EMPTY = ansi '90'   # Dark gray — context bar empty
+$C_5H        = ansi '33'   # Yellow — 5h rate limit
+$C_7D        = ansi '35'   # Magenta — 7d rate limit
+$C_TOK       = ansi '96'   # Cyan bright — token counts
+$C_SEP       = ansi '90'   # Dark gray — separators
+$C_STAGED    = ansi '32'   # Green — staged changes
+$C_UNSTAGED  = ansi '31'   # Red — unstaged changes
+$C_PUSH      = ansi '33'   # Yellow — commits to push
+$C_PULL      = ansi '36'   # Cyan — commits to pull
+
+function Make-Bar {
+    param($pct, $fillColor)
+    $pctInt = [math]::Round([double]$pct, 0)
+    $filled = [math]::Floor($pctInt * 10 / 100)
+    if ($filled -lt 0)  { $filled = 0  }
+    if ($filled -gt 10) { $filled = 10 }
+    $empty = 10 - $filled
+    $bar = ''
+    for ($i = 0; $i -lt $filled; $i++) { $bar += "${fillColor}▰" }
+    for ($i = 0; $i -lt $empty;  $i++) { $bar += "${C_CTX_EMPTY}▱" }
+    return $bar
+}
+
+function Format-Tokens {
+    param($n)
+    if ($n -ge 1000) { return "$([math]::Round($n / 1000.0, 1))k" }
+    return "$n"
+}
 
 try {
-    # Read JSON input from stdin
     $inputData = [Console]::In.ReadToEnd() | ConvertFrom-Json
 
-    # Extract information
-    $model = $inputData.model.display_name
-    $cwd = $inputData.workspace.current_dir
-    $projectDir = $inputData.workspace.project_dir
+    $userName  = $env:USERNAME
+    $hostName  = $env:COMPUTERNAME
+    $dir       = $inputData.workspace.current_dir
+    $model     = $inputData.model.display_name
+    $timestamp = Get-Date -Format 'HH:mm:ss'
 
-    # Calculate relative path from project root
-    $relPath = '.'
-    if ($cwd -and $projectDir -and $cwd.StartsWith($projectDir)) {
-        $relative = $cwd.Substring($projectDir.Length).TrimStart('\', '/')
-        if (-not [string]::IsNullOrEmpty($relative)) { $relPath = $relative }
-    } elseif ($cwd) {
-        $relPath = Split-Path $cwd -Leaf
+    $remaining = $inputData.context_window.remaining_percentage
+    $used      = $inputData.context_window.used_percentage
+    $totalIn   = $inputData.context_window.total_input_tokens
+    $totalOut  = $inputData.context_window.total_output_tokens
+
+    $sep = "${C_SEP}|${RESET}"
+
+    # Line 1: user@host:dir | model | timestamp
+    [Console]::WriteLine("${C_USER}${userName}@${hostName}:${dir}${RESET} $sep ${C_MODEL}${model}${RESET} $sep ${C_TIME}${timestamp}${RESET}")
+
+    # Line 2: ctx | 5h | 7d | tokens (only when context data is available)
+    if ($null -ne $remaining -and $null -ne $used) {
+        $ctxBar = Make-Bar $used $C_CTX_LABEL
+        $remInt = [math]::Round([double]$remaining, 0)
+        $line2  = "${C_CTX_LABEL}ctx:[${ctxBar}${C_CTX_LABEL}] ${remInt}%${RESET}"
+
+        $fivePct = $inputData.rate_limits.five_hour.used_percentage
+        if ($null -ne $fivePct) {
+            $bar5    = Make-Bar $fivePct $C_5H
+            $fiveInt = [math]::Round([double]$fivePct, 0)
+            $line2  += " $sep ${C_5H}5h:[${bar5}${C_5H}] ${fiveInt}%${RESET}"
+        }
+
+        $weekPct = $inputData.rate_limits.seven_day.used_percentage
+        if ($null -ne $weekPct) {
+            $bar7    = Make-Bar $weekPct $C_7D
+            $weekInt = [math]::Round([double]$weekPct, 0)
+            $line2  += " $sep ${C_7D}7d:[${bar7}${C_7D}] ${weekInt}%${RESET}"
+        }
+
+        if ($null -ne $totalIn -and $null -ne $totalOut) {
+            $inFmt  = Format-Tokens $totalIn
+            $outFmt = Format-Tokens $totalOut
+            $line2 += " $sep ${C_TOK}in:${inFmt} out:${outFmt}${RESET}"
+        }
+
+        [Console]::WriteLine($line2)
     }
 
-    # Calculate context window usage with colored progress bar
-    $contextInfo = ''
-    if ($null -ne $inputData.context_window -and $null -ne $inputData.context_window.current_usage) {
-        $usage = $inputData.context_window.current_usage
-        $currentTokens = 0
-        if ($null -ne $usage.input_tokens) { $currentTokens += $usage.input_tokens }
-        if ($null -ne $usage.cache_creation_input_tokens) { $currentTokens += $usage.cache_creation_input_tokens }
-        if ($null -ne $usage.cache_read_input_tokens) { $currentTokens += $usage.cache_read_input_tokens }
-
-        $contextWindowSize = $inputData.context_window.context_window_size
-
-        if ($contextWindowSize -gt 0) {
-            $percentage = [math]::Floor(($currentTokens * 100) / $contextWindowSize)
-
-            # Create progress bar (10 segments) using Unicode
-            $barLength = 10
-            $filled = [math]::Floor(($percentage / 100) * $barLength)
-            if ($filled -lt 0) { $filled = 0 }
-            if ($filled -gt $barLength) { $filled = $barLength }
-            $empty = $barLength - $filled
-
-            $filledBar = "${FG_CYAN}$("▰" * $filled)${RESET}"
-            $emptyBar  = "${FG_CYAN}$("▱" * $empty)${RESET}"
-            $contextInfo = "${FG_CYAN}ctx${RESET}:[${filledBar}${emptyBar}] ${FG_CYAN}${percentage}%${RESET}"
-        }
-    }
-
-    # Add total tokens information
-    $tokensInfo = ''
-    if ($null -ne $inputData.context_window) {
-        $totalInput = $inputData.context_window.total_input_tokens
-        $totalOutput = $inputData.context_window.total_output_tokens
-        if ($null -ne $totalInput -and $null -ne $totalOutput) {
-            $formatTokens = {
-                param($value)
-                if ($value -ge 1000) {
-                    return "$([math]::Round($value / 1000, 1))K"
-                } else {
-                    return "$value"
-                }
-            }
-            $inStr  = & $formatTokens $totalInput
-            $outStr = & $formatTokens $totalOutput
-            $tokensInfo = "${FG_GRAY}in:${RESET}${inStr} ${FG_GRAY}out:${RESET}${outStr}"
-        }
-    }
-
-    # Calculate rate limit information with colored progress bars
-    $rateLimitInfo = ''
-    if ($null -ne $inputData.rate_limits) {
-        $parts = @()
-        $rlBarLength = 10
-        if ($null -ne $inputData.rate_limits.five_hour) {
-            $fivePct    = [math]::Round($inputData.rate_limits.five_hour.used_percentage, 0)
-            $fiveFilled = [math]::Floor(($fivePct / 100) * $rlBarLength)
-            if ($fiveFilled -lt 0) { $fiveFilled = 0 }
-            if ($fiveFilled -gt $rlBarLength) { $fiveFilled = $rlBarLength }
-            $fiveEmpty  = $rlBarLength - $fiveFilled
-            $fiveBar    = "${FG_YELLOW}$("▰" * $fiveFilled)${RESET}${FG_YELLOW}$("▱" * $fiveEmpty)${RESET}"
-            $parts += "${FG_YELLOW}5h${RESET}:[${fiveBar}] ${FG_YELLOW}${fivePct}%${RESET}"
-        }
-        if ($null -ne $inputData.rate_limits.seven_day) {
-            $weekPct    = [math]::Round($inputData.rate_limits.seven_day.used_percentage, 0)
-            $weekFilled = [math]::Floor(($weekPct / 100) * $rlBarLength)
-            if ($weekFilled -lt 0) { $weekFilled = 0 }
-            if ($weekFilled -gt $rlBarLength) { $weekFilled = $rlBarLength }
-            $weekEmpty  = $rlBarLength - $weekFilled
-            $weekBar    = "${FG_MAGENTA}$("▰" * $weekFilled)${RESET}${FG_MAGENTA}$("▱" * $weekEmpty)${RESET}"
-            $parts += "${FG_MAGENTA}7d${RESET}:[${weekBar}] ${FG_MAGENTA}${weekPct}%${RESET}"
-        }
-        if ($parts.Count -gt 0) {
-            $rateLimitInfo = $parts -join " ${DIM}|${RESET} "
-        }
-    }
-
-    # Get git branch
-    $gitBranch = ''
-    if ($cwd -and (Test-Path $cwd)) {
-        Push-Location $cwd
+    # Line 3: git status (only inside a git repo)
+    if ($dir -and (Test-Path $dir)) {
+        Push-Location $dir
         try {
-            $gitInfo = git branch --show-current 2>$null
-            if ($LASTEXITCODE -eq 0 -and $gitInfo) {
-                $gitBranch = $gitInfo.Trim()
+            git rev-parse --git-dir 2>$null | Out-Null
+            if ($LASTEXITCODE -eq 0) {
+                $branch = git -c core.useReplaceRefs=false rev-parse --abbrev-ref HEAD 2>$null
+                if (-not $branch) { $branch = 'unknown' }
+
+                $staged   = @(git -c core.useReplaceRefs=false diff --cached --name-only 2>$null).Count
+                $unstaged = @(git -c core.useReplaceRefs=false diff --name-only 2>$null).Count
+
+                $ahead  = 0
+                $behind = 0
+                $remote = git -c core.useReplaceRefs=false rev-parse --abbrev-ref '@{upstream}' 2>$null
+                if ($remote) {
+                    $aheadStr  = git -c core.useReplaceRefs=false rev-list --count '@{upstream}..HEAD' 2>$null
+                    $behindStr = git -c core.useReplaceRefs=false rev-list --count 'HEAD..@{upstream}' 2>$null
+                    if ($aheadStr)  { $ahead  = [int]$aheadStr  }
+                    if ($behindStr) { $behind = [int]$behindStr }
+                }
+
+                $gitLine  = "${C_GIT}branch:${branch}${RESET}"
+                $gitLine += " $sep ${C_STAGED}staged:${staged}${RESET}"
+                $gitLine += " $sep ${C_UNSTAGED}unstaged:${unstaged}${RESET}"
+                $gitLine += " $sep ${C_PUSH}push:${ahead}${RESET}"
+                $gitLine += " $sep ${C_PULL}pull:${behind}${RESET}"
+
+                [Console]::WriteLine($gitLine)
             }
-        } catch { }
-        Pop-Location
+        } catch { } finally {
+            Pop-Location
+        }
     }
-
-    # Build status line
-    # Line 1: branch, model, path
-    $line1 = ""
-    if ($gitBranch) {
-        $line1 += "${FG_BLUE}(${gitBranch})${RESET} "
-    }
-    $line1 += "${BOLD}${FG_WHITE}${model}${RESET}"
-
-    # Line 2: context bar, tokens, rate limits (only when data is available)
-    $line2Parts = @()
-    if ($contextInfo -ne '') { $line2Parts += $contextInfo }
-    if ($tokensInfo -ne '') { $line2Parts += $tokensInfo }
-    if ($rateLimitInfo -ne '') { $line2Parts += $rateLimitInfo }
-
-    # Line 3: relative path
-    $line3 = "${DIM}${relPath}${RESET}"
-
-    [Console]::WriteLine($line1)
-    if ($line2Parts.Count -gt 0) {
-        [Console]::WriteLine($line2Parts -join " ${DIM}|${RESET} ")
-    }
-    [Console]::WriteLine($line3)
 } catch {
     [Console]::WriteLine("StatusLine Error: $_")
 }
