@@ -1,3 +1,4 @@
 scoop/config.json
 vscode/default.code-profile
 configstore
+__pycache__/

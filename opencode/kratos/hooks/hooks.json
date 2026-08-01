@@ -1,0 +1,311 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook prompt-submit",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.cjs\"",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/permission-read.cjs\"",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/plan-mode-guard.cjs\"",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook fix-pm",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Task|Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/tool-use.cjs\"",
+            "timeout": 5000,
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook spec-delta-check",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "kratos:.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/path-inject.cjs\"",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:ares",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-start",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:hephaestus",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-start",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:hermes",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-start",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:athena",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --init",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:apollo",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --init --stage 5-spec-review-sa",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:artemis",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --init --stage 6-test-plan",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:hera",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --init --stage 8-prd-alignment",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:cassandra",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --init --stage 9-review",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:daedalus",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --init --stage 3-decomposition",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "kratos:nemesis",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-stop",
+            "timeout": 10000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:ares",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-stop",
+            "timeout": 10000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:hephaestus",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-stop",
+            "timeout": 10000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:hermes",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-stop",
+            "timeout": 10000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:athena",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --verify",
+            "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" hook subagent-stop",
+            "timeout": 10000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:apollo",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --verify --stage 5-spec-review-sa",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:artemis",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --verify --stage 6-test-plan",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:hera",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --verify --stage 8-prd-alignment",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:cassandra",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --verify --stage 9-review",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "kratos:daedalus",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/launch.cjs\" check --verify --stage 3-decomposition",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-end.cjs\"",
+            "timeout": 10000
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/memory-sweep.cjs\"",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  }
+}
