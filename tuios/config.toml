@@ -1,0 +1,377 @@
+# TUIOS Configuration File
+# This file allows you to customize appearance and keybindings
+#
+# Configuration location: C:\Users\lizard_liang\AppData\Local\tuios\config.toml
+# Documentation: https://github.com/Gaurav-Gosain/tuios
+# For keybindings documentation, run: tuios keybinds list
+
+# ============================================================================
+# APPEARANCE SETTINGS
+# ============================================================================
+# Many of these can be changed live from the in-app settings page
+# (open it with the leader key followed by ',').
+#
+# border_style: rounded, normal, thick, double, hidden, block, ascii,
+#               outer-half-block, inner-half-block
+# dockbar_position: bottom, top, hidden
+# window_title_position: bottom, top, hidden
+# theme: color theme name (e.g. dracula, nord); empty for terminal colors
+# click_to_type: single (a click on a pane starts typing in it), double
+#               (two clicks do), off (a click only focuses)
+# [appearance.scrollbar]: style = thin, track; thumb/track = a one-cell glyph
+#               (track also takes "none"); tint = border, muted, #RRGGBB
+# ============================================================================
+
+# ============================================================================
+# KEYBINDINGS
+# ============================================================================
+# Set an action to [] to unbind it and hand the key back to the shell.
+#
+# [keybindings.terminal_mode] binds alt+arrows to move focus between panes.
+# In readline, fish and zsh, alt+left and alt+right move the cursor a word
+# at a time. If you want those back:
+#
+#   [keybindings.terminal_mode]
+#   terminal_focus_left = []
+#   terminal_focus_right = []
+#
+# alt+up and alt+down are unclaimed by the common shells, so they are the
+# safer pair to keep.
+#
+# hold_window_mode binds a key that puts tuios in window-management mode for
+# as long as it is physically held, and hands the previous mode back when it
+# is let go:
+#
+#   [keybindings.mode_control]
+#   hold_window_mode = ["leftalt"]
+#
+# It needs a terminal that speaks the Kitty keyboard protocol (Ghostty, kitty,
+# WezTerm, foot, Alacritty; not Terminal.app), because nothing else reports
+# that a key was released. Naming a modifier key (leftalt, rightalt, leftctrl,
+# leftsuper) asks the terminal for one more thing on top: every keystroke in
+# the session then arrives as an escape code. Any ordinary key (f13, scroll
+# lock, a spare letter) avoids that. Unbound by default.
+# ============================================================================
+
+[appearance]
+border_style = 'rounded'
+hide_window_buttons = true
+hide_scrollbar = false
+scrollback_lines = 10000
+scroll_lines = 3
+click_to_type = 'single'
+dockbar_position = 'bottom'
+preferred_shell = 'pwsh'
+whichkey_position = ''
+window_title_position = 'bottom'
+hide_clock = false
+show_clock = false
+show_cpu = false
+show_ram = false
+theme = 'tokyo_night'
+shared_borders = false
+border_focused_color = ''
+border_unfocused_color = ''
+window_title_format = ''
+zoom_max_width = 0
+niri_reverse_scroll = false
+max_fps = 0
+sidebar_enabled = false
+
+[appearance.scrollbar]
+style = 'thin'
+thumb = ''
+track = ''
+tint = 'border'
+
+[appearance.sidebar]
+position = 'left'
+width = 28
+workspaces = ''
+
+[notifications]
+duration = 0
+warning_duration = 0
+error_duration = 0
+
+[notifications.agent]
+sound_mode = ''
+command = ''
+quiet_hours = ''
+
+[notifications.agent.states]
+[notifications.agent.sounds]
+done = ''
+needs_input = ''
+
+[keybindings]
+leader_key = 'ctrl+a'
+
+[keybindings.window_management]
+close_window = ['w', 'x']
+copy_selection = ['c']
+focus_sidebar = ['s']
+minimize_window = ['m']
+new_window = ['n']
+next_session = ['alt+shift+n']
+next_window = ['tab']
+prev_session = ['alt+shift+p']
+prev_window = ['shift+tab']
+rename_window = ['r']
+restore_all = ['M']
+select_window_1 = ['1']
+select_window_2 = ['2']
+select_window_3 = ['3']
+select_window_4 = ['4']
+select_window_5 = ['5']
+select_window_6 = ['6']
+select_window_7 = ['7']
+select_window_8 = ['8']
+select_window_9 = ['9']
+toggle_zoom = ['z']
+
+[keybindings.workspaces]
+move_and_follow_1 = ['alt+shift+1']
+move_and_follow_2 = ['alt+shift+2']
+move_and_follow_3 = ['alt+shift+3']
+move_and_follow_4 = ['alt+shift+4']
+move_and_follow_5 = ['alt+shift+5']
+move_and_follow_6 = ['alt+shift+6']
+move_and_follow_7 = ['alt+shift+7']
+move_and_follow_8 = ['alt+shift+8']
+move_and_follow_9 = ['alt+shift+9']
+switch_workspace_1 = ['alt+1']
+switch_workspace_2 = ['alt+2']
+switch_workspace_3 = ['alt+3']
+switch_workspace_4 = ['alt+4']
+switch_workspace_5 = ['alt+5']
+switch_workspace_6 = ['alt+6']
+switch_workspace_7 = ['alt+7']
+switch_workspace_8 = ['alt+8']
+switch_workspace_9 = ['alt+9']
+
+[keybindings.layout]
+equalize_splits = ['=']
+preselect_down = ['alt+j']
+preselect_left = ['alt+h']
+preselect_right = ['alt+l']
+preselect_up = ['alt+k']
+resize_height_grow = ['}', 'shift+]']
+resize_height_grow_top = [']']
+resize_height_shrink = ['{', 'shift+[']
+resize_height_shrink_top = ['[']
+resize_master_grow = ['>', 'shift+.']
+resize_master_grow_left = ['.']
+resize_master_shrink = ['<', 'shift+,']
+resize_master_shrink_left = [',']
+rotate_split = ['R']
+snap_corner_1 = ['1']
+snap_corner_2 = ['2']
+snap_corner_3 = ['3']
+snap_corner_4 = ['4']
+snap_fullscreen = ['f']
+snap_left = ['h']
+snap_right = ['l']
+split_horizontal = ['-']
+split_vertical = ['|', '\']
+swap_down = ['alt+down', 'ctrl+down']
+swap_left = ['alt+left', 'ctrl+left']
+swap_right = ['alt+right', 'ctrl+right']
+swap_up = ['alt+up', 'ctrl+up']
+terminal_focus_down = ['J']
+terminal_focus_left = ['H']
+terminal_focus_right = ['L']
+terminal_focus_up = ['K']
+toggle_tiling = ['t']
+unsnap = ['u']
+
+[keybindings.mode_control]
+enter_terminal_mode = ['i', 'enter']
+enter_window_mode = ['esc']
+quit = []
+toggle_help = ['?']
+
+[keybindings.system]
+[keybindings.navigation]
+extend_down = ['shift+down']
+extend_left = ['shift+left']
+extend_right = ['shift+right']
+extend_up = ['shift+up']
+nav_down = ['down']
+nav_left = ['left']
+nav_right = ['right']
+nav_up = ['up']
+
+[keybindings.restore_minimized]
+restore_minimized_1 = ['shift+1', '!']
+restore_minimized_2 = ['shift+2', '@']
+restore_minimized_3 = ['shift+3', '#']
+restore_minimized_4 = ['shift+4', '$']
+restore_minimized_5 = ['shift+5', '%']
+restore_minimized_6 = ['shift+6', '^']
+restore_minimized_7 = ['shift+7', '&']
+restore_minimized_8 = ['shift+8', '*']
+restore_minimized_9 = ['shift+9', '(']
+
+[keybindings.prefix_mode]
+prefix_close_session = ['X']
+prefix_close_window = ['x']
+prefix_command_palette = ['P']
+prefix_debug = ['D']
+prefix_detach = ['d']
+prefix_equalize_splits = ['=']
+prefix_exit_mode = ['esc']
+prefix_explore = ['e']
+prefix_fullscreen = ['z']
+prefix_help = ['?']
+prefix_jump_notif = ['j']
+prefix_layout = ['L']
+prefix_minimize = ['m']
+prefix_new_window = ['c']
+prefix_next_window = ['n', 'tab']
+prefix_prev_window = ['p', 'shift+tab']
+prefix_quit = ['q']
+prefix_rename_window = ['r']
+prefix_rotate_split = ['R']
+prefix_scrollback = ['s']
+prefix_select_0 = ['0']
+prefix_select_1 = ['1']
+prefix_select_2 = ['2']
+prefix_select_3 = ['3']
+prefix_select_4 = ['4']
+prefix_select_5 = ['5']
+prefix_select_6 = ['6']
+prefix_select_7 = ['7']
+prefix_select_8 = ['8']
+prefix_select_9 = ['9']
+prefix_selection = ['[']
+prefix_session_switcher = ['S']
+prefix_settings = [',']
+prefix_split_horizontal = ['-']
+prefix_split_vertical = ['|', '\']
+prefix_tape = ['T']
+prefix_toggle_sidebar = ['b']
+prefix_toggle_tiling = ['space']
+prefix_window = ['t']
+prefix_workspace = ['w']
+prefix_workspace_switcher = ['W']
+
+[keybindings.window_prefix]
+window_prefix_cancel = ['esc']
+window_prefix_close = ['x']
+window_prefix_new = ['n']
+window_prefix_next = ['tab']
+window_prefix_prev = ['shift+tab']
+window_prefix_rename = ['r']
+window_prefix_tiling = ['t']
+
+[keybindings.minimize_prefix]
+minimize_prefix_cancel = ['esc']
+minimize_prefix_focused = ['m']
+minimize_prefix_restore_1 = ['1']
+minimize_prefix_restore_2 = ['2']
+minimize_prefix_restore_3 = ['3']
+minimize_prefix_restore_4 = ['4']
+minimize_prefix_restore_5 = ['5']
+minimize_prefix_restore_6 = ['6']
+minimize_prefix_restore_7 = ['7']
+minimize_prefix_restore_8 = ['8']
+minimize_prefix_restore_9 = ['9']
+minimize_prefix_restore_all = ['M']
+
+[keybindings.workspace_prefix]
+workspace_prefix_cancel = ['esc']
+workspace_prefix_move_1 = ['!']
+workspace_prefix_move_2 = ['@']
+workspace_prefix_move_3 = ['#']
+workspace_prefix_move_4 = ['$']
+workspace_prefix_move_5 = ['%']
+workspace_prefix_move_6 = ['^']
+workspace_prefix_move_7 = ['&']
+workspace_prefix_move_8 = ['*']
+workspace_prefix_move_9 = ['(']
+workspace_prefix_rename = ['r']
+workspace_prefix_switch_1 = ['1']
+workspace_prefix_switch_2 = ['2']
+workspace_prefix_switch_3 = ['3']
+workspace_prefix_switch_4 = ['4']
+workspace_prefix_switch_5 = ['5']
+workspace_prefix_switch_6 = ['6']
+workspace_prefix_switch_7 = ['7']
+workspace_prefix_switch_8 = ['8']
+workspace_prefix_switch_9 = ['9']
+
+[keybindings.debug_prefix]
+debug_prefix_animations = ['a']
+debug_prefix_cache = ['c']
+debug_prefix_cancel = ['esc']
+debug_prefix_logs = ['l']
+debug_prefix_showkeys = ['k']
+
+[keybindings.tape_prefix]
+tape_prefix_cancel = ['esc']
+tape_prefix_manager = ['m']
+tape_prefix_record = ['r']
+tape_prefix_review = ['t']
+tape_prefix_stop = ['s']
+
+[keybindings.terminal_mode]
+terminal_exit_mode = ['alt+esc']
+terminal_focus_down = ['alt+j']
+terminal_focus_left = ['alt+h']
+terminal_focus_right = ['alt+l']
+terminal_focus_up = ['alt+k']
+terminal_next_window = ['alt+n']
+terminal_prev_window = ['alt+p']
+
+[keybindings.sidebar]
+accent = ['c']
+activate = ['enter']
+agents_filter = ['f']
+agents_sort = ['o']
+collapse = ['h', 'left']
+cursor_down = ['j', 'down']
+cursor_up = ['k', 'up']
+exit = ['esc', 's']
+expand = ['l', 'right']
+first = ['g', 'home']
+help = ['?']
+jump_1 = ['1']
+jump_2 = ['2']
+jump_3 = ['3']
+jump_4 = ['4']
+jump_5 = ['5']
+jump_6 = ['6']
+jump_7 = ['7']
+jump_8 = ['8']
+jump_9 = ['9']
+kill = ['x']
+last = ['G', 'end']
+menu = ['m']
+narrow = ['<']
+new_session = ['n']
+new_window = ['t']
+rename = ['r']
+reorder_down = ['J', 'shift+down']
+reorder_up = ['K', 'shift+up']
+section = ['tab', 'shift+tab']
+widen = ['>']
+
+[daemon]
+log_level = 'off'
+default_codec = 'gob'
+socket_path = ''
+agent_detect_seconds = 0
+agent_binaries = []
+
+[startup]
+open_default_window = false
+tiled = false
+start_in_terminal_mode = false
+
+[tape]
+autorun = 'ask'
+auto_review = false
+
+[debug]
+show_key_events = false
