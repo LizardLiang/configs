@@ -41,7 +41,9 @@ function Format-Tokens {
 }
 
 try {
-    $inputData = [Console]::In.ReadToEnd() | ConvertFrom-Json
+    # Claude Code writes UTF-8; [Console]::In decodes with the console code page (big5 here).
+    $stdin = [IO.StreamReader]::new([Console]::OpenStandardInput(), [Text.UTF8Encoding]::new($false))
+    $inputData = $stdin.ReadToEnd() | ConvertFrom-Json
 
     $userName  = $env:USERNAME
     $hostName  = $env:COMPUTERNAME
@@ -69,7 +71,12 @@ try {
         if ($null -ne $fivePct) {
             $bar5    = Make-Bar $fivePct $C_5H
             $fiveInt = [math]::Round([double]$fivePct, 0)
-            $line2  += " $sep ${C_5H}5h:[${bar5}${C_5H}] ${fiveInt}%${RESET}"
+            $fiveReset = $inputData.rate_limits.five_hour.resets_at
+            $fiveResetStr = ''
+            if ($fiveReset) {
+                $fiveResetStr = ' @' + [DateTimeOffset]::FromUnixTimeSeconds([long]$fiveReset).ToLocalTime().ToString('HH:mm')
+            }
+            $line2  += " $sep ${C_5H}5h:[${bar5}${C_5H}] ${fiveInt}%${fiveResetStr}${RESET}"
         }
 
         $weekPct = $inputData.rate_limits.seven_day.used_percentage
